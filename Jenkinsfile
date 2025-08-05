@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git 'https://github.com/MaDycloud-MD/app_for_jenkins.git'
+                git branch: 'main', url: 'https://github.com/MaDycloud-MD/app_for_jenkins.git'
             }
         }
 
