@@ -2,19 +2,19 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "madycloudmd/app_for_jenkins"
+        IMAGE_NAME = "madycloudmd/app_for_jenkins:latest"
     }
 
     stages {
         stage('Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/MaDycloud-MD/app_for_jenkins.git'
+                echo 'Source code already checked out by Jenkins.'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building the application...'
+                echo 'Building the Docker image...'
                 sh 'docker build -t $IMAGE_NAME .'
             }
         }
@@ -30,7 +30,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh '''
-                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                         docker push $IMAGE_NAME
                     '''
                 }
