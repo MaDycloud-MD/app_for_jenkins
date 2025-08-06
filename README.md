@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# Jenkins Pipeline for Automating React App Deployment on AWS using Docker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Objective
+The goal of this setup was to automate the build and deployment process of a React application using Jenkins and Docker. All tasks were executed on AWS cloud infrastructure.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Tools Used
+- **Jenkins** (running on an EC2 instance)
+- **Docker** (for containerizing the app)
+- **GitHub** (code repository)
+- **AWS EC2** (to host Jenkins and the deployed app)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Step-by-Step Process
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. Setting Up Jenkins on AWS EC2
+- Launched an Ubuntu EC2 instance.
+- Updated system packages and installed Java (required by Jenkins).
+- Installed Jenkins via apt repository.
+- Enabled port `8080` in AWS security group to access Jenkins UI.
+- Retrieved Jenkins initial admin password and completed setup.
+- Installed recommended plugins and created a new admin user.
 
-### `npm test`
+### 2. Installing Docker on EC2
+- Installed Docker CE using official Docker instructions.
+- Added the Jenkins user to the `docker` group to allow Docker access without sudo.
+- Verified Docker was working by running `docker run hello-world`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 3. Configuring GitHub Repository
+- Pushed the demo React app to a public GitHub repository.
+- Ensured the branch name was `main` (Jenkins default matches this).
+- In Jenkins, created a **New Item → Pipeline** and linked it to the GitHub repo using the HTTPS URL.
 
-### `npm run build`
+### 4. Writing the `Jenkinsfile`
+In the root of the GitHub repo, I created the following `Jenkinsfile`:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```groovy
+pipeline {
+    agent any
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    environment {
+        DOCKER_IMAGE = 'madycloudmd/react-demo-app'
+    }
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: '< repo-link >'
+            }
+        }
 
-### `npm run eject`
+        stage('Build') {
+            steps {
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t $DOCKER_IMAGE .'
+            }
+        }
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh '''
+                      echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
+                      docker push $DOCKER_IMAGE
+                    '''
+                }
+            }
+        }
+    }
+}
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Webhook Integration (Trigger on Git Push)
 
-## Learn More
+To automate the Jenkins pipeline to trigger on every Git push, I integrated a GitHub webhook into my Jenkins setup. This allowed Jenkins to be notified instantly whenever new code is pushed to the repository, initiating the pipeline automatically.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Steps I Followed:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. **Configured GitHub Webhook**  
+   - Went to my GitHub repository → **Settings** → **Webhooks** → **Add webhook**.
+   - Set the **Payload URL** to:  
+     ```
+     http://<jenkins-public-ip>:8080/github-webhook/
+     ```
+   - Selected **Content type** as `application/json`.
+   - Chose to trigger on **Just the push event**.
+   - Clicked **Add Webhook**.
 
-### Code Splitting
+2. **Jenkins Job Configuration**  
+   - In the Jenkins dashboard, I opened my pipeline job.
+   - Under **Build Triggers**, I checked:
+     - ✅ *GitHub hook trigger for GITScm polling*
+   - Saved the configuration.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. **Firewall/Security Group Configuration**  
+   - Ensured my AWS EC2 instance allowed **port 8080** to be publicly accessible.
+   - Updated security group rules accordingly.
 
-### Analyzing the Bundle Size
+4. **Tested the Integration**  
+   - Pushed a new commit to the `main` branch on GitHub.
+   - Observed Jenkins automatically triggering the pipeline without manual input.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Troubleshooting Faced:
 
-### Making a Progressive Web App
+- **Webhook Not Triggering Jenkins:**
+  - Initially, I missed opening port 8080 in the AWS Security Group.
+  - Fixed by editing the security group and allowing inbound traffic on port 8080.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **Jenkins Didn't Receive the Payload:**
+  - My Jenkins URL had `/` at the end but GitHub added it again: `.../github-webhook//`
+  - Fixed by using the correct URL: `http://<jenkins-ip>:8080/github-webhook/`
 
-### Advanced Configuration
+- **Payload URL Error from GitHub:**
+  - GitHub showed a **"We couldn't deliver this payload"** error.
+  - Ensured Jenkins server was publicly accessible and GitHub could reach it.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> After these configurations and fixes, Jenkins now automatically builds the pipeline whenever I push code to the repository.
