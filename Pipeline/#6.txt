@@ -1,0 +1,230 @@
+Started by GitHub push by MaDycloud-MD
+Obtained Jenkinsfile from git https://github.com/MaDycloud-MD/app_for_jenkins.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/ReactAppPipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/ReactAppPipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/MaDycloud-MD/app_for_jenkins.git # timeout=10
+Fetching upstream changes from https://github.com/MaDycloud-MD/app_for_jenkins.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/MaDycloud-MD/app_for_jenkins.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision f1a0eb4b7f0d768de3ee9a1985d381ddbc6460a5 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f1a0eb4b7f0d768de3ee9a1985d381ddbc6460a5 # timeout=10
+Commit message: "Testing"
+ > git rev-list --no-walk 66c4eceb03316e4e86d72aebddc3785cb9a2249a # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] git
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/ReactAppPipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/MaDycloud-MD/app_for_jenkins.git # timeout=10
+Fetching upstream changes from https://github.com/MaDycloud-MD/app_for_jenkins.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/MaDycloud-MD/app_for_jenkins.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision f1a0eb4b7f0d768de3ee9a1985d381ddbc6460a5 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f1a0eb4b7f0d768de3ee9a1985d381ddbc6460a5 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main f1a0eb4b7f0d768de3ee9a1985d381ddbc6460a5 # timeout=10
+Commit message: "Testing"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] sh
++ npm install
+
+up to date, audited 1340 packages in 4s
+
+269 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[Pipeline] sh
++ npm run build
+
+> app_for_jenkins@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+Compiled successfully.
+
+File sizes after gzip:
+
+  59.1 kB (-6 B)  build/static/js/main.2d2f3c6b.js
+  1.77 kB         build/static/js/453.3f49ba02.chunk.js
+  513 B           build/static/css/main.f855e6bc.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Docker Build)
+[Pipeline] sh
++ docker build -t madycloudmd/react-demo-app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  270.9MB
+Step 1/8 : FROM node:18-alpine as build
+ ---> ee77c6cd7c18
+Step 2/8 : WORKDIR /app
+ ---> Using cache
+ ---> d21822686559
+Step 3/8 : COPY . .
+ ---> 7d86cefcd4b7
+Step 4/8 : RUN npm install && npm run build
+ ---> Running in eaf8ccf983ef
+
+up to date, audited 1340 packages in 5s
+
+269 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[91mnpm notice
+npm notice New major version of npm available! 10.8.2 -> 11.5.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.5.2
+npm notice To update run: npm install -g npm@11.5.2
+npm notice
+[0m
+> app_for_jenkins@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+Compiled successfully.
+
+File sizes after gzip:
+
+  59.1 kB  build/static/js/main.2d2f3c6b.js
+  1.77 kB  build/static/js/453.3f49ba02.chunk.js
+  513 B    build/static/css/main.f855e6bc.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+ ---> Removed intermediate container eaf8ccf983ef
+ ---> c2fb2f0029d5
+Step 5/8 : FROM nginx:stable-alpine
+ ---> aec7f4ce8b81
+Step 6/8 : COPY --from=build /app/build /usr/share/nginx/html
+ ---> b99b5ac866a2
+Step 7/8 : EXPOSE 80
+ ---> Running in d3528b7cfa6f
+ ---> Removed intermediate container d3528b7cfa6f
+ ---> 32252f031bcd
+Step 8/8 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Running in 92c59dc1b70e
+ ---> Removed intermediate container 92c59dc1b70e
+ ---> 627da8860400
+Successfully built 627da8860400
+Successfully tagged madycloudmd/react-demo-app:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Docker Push)
+[Pipeline] withCredentials
+Masking supported pattern matches of $PASSWORD
+[Pipeline] {
+[Pipeline] sh
++ echo ****
++ docker login -u madycloudmd --password-stdin
+WARNING! Your password will be stored unencrypted in /var/lib/jenkins/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credential-stores
+
+Login Succeeded
++ docker push madycloudmd/react-demo-app
+Using default tag: latest
+The push refers to repository [docker.io/madycloudmd/react-demo-app]
+a79e48c4f4b3: Preparing
+365f05739a0b: Preparing
+09a78e1c8457: Preparing
+aabf53a58c5a: Preparing
+39b5112a4779: Preparing
+243fb2529a82: Preparing
+3c0990ff3868: Preparing
+daf8a96d7e43: Preparing
+7003d23cc217: Preparing
+243fb2529a82: Waiting
+3c0990ff3868: Waiting
+daf8a96d7e43: Waiting
+7003d23cc217: Waiting
+365f05739a0b: Layer already exists
+39b5112a4779: Layer already exists
+aabf53a58c5a: Layer already exists
+09a78e1c8457: Layer already exists
+243fb2529a82: Layer already exists
+daf8a96d7e43: Layer already exists
+3c0990ff3868: Layer already exists
+7003d23cc217: Layer already exists
+a79e48c4f4b3: Pushed
+latest: digest: sha256:a2c339f4b0b56f80d7d6d7786596f6d608d897d81760061560a4520ac727db29 size: 2199
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS

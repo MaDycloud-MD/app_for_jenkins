@@ -1,0 +1,314 @@
+Started by user Admin
+Obtained Jenkinsfile from git https://github.com/MaDycloud-MD/app_for_jenkins.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/ReactAppPipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/ReactAppPipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/MaDycloud-MD/app_for_jenkins.git # timeout=10
+Fetching upstream changes from https://github.com/MaDycloud-MD/app_for_jenkins.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/MaDycloud-MD/app_for_jenkins.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 66c4eceb03316e4e86d72aebddc3785cb9a2249a (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 66c4eceb03316e4e86d72aebddc3785cb9a2249a # timeout=10
+Commit message: "Add Dockerfile and Jenkinsfile"
+ > git rev-list --no-walk 66c4eceb03316e4e86d72aebddc3785cb9a2249a # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] git
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/ReactAppPipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/MaDycloud-MD/app_for_jenkins.git # timeout=10
+Fetching upstream changes from https://github.com/MaDycloud-MD/app_for_jenkins.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/MaDycloud-MD/app_for_jenkins.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 66c4eceb03316e4e86d72aebddc3785cb9a2249a (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 66c4eceb03316e4e86d72aebddc3785cb9a2249a # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main 66c4eceb03316e4e86d72aebddc3785cb9a2249a # timeout=10
+Commit message: "Add Dockerfile and Jenkinsfile"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] sh
++ npm install
+npm warn deprecated w3c-hr-time@1.0.2: Use your platform's native performance.now() and performance.timeOrigin.
+npm warn deprecated stable@0.1.8: Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility
+npm warn deprecated sourcemap-codec@1.4.8: Please use @jridgewell/sourcemap-codec instead
+npm warn deprecated rollup-plugin-terser@7.0.2: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-terser
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated workbox-google-analytics@6.6.0: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
+npm warn deprecated q@1.5.1: You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+npm warn deprecated
+npm warn deprecated (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
+npm warn deprecated workbox-cacheable-response@6.6.0: workbox-background-sync@6.6.0
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated domexception@2.0.1: Use your platform's native DOMException instead
+npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm warn deprecated svgo@1.3.2: This SVGO version is no longer supported. Upgrade to v2.x.x.
+npm warn deprecated @babel/plugin-proposal-private-methods@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-methods instead.
+npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+npm warn deprecated @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+npm warn deprecated @babel/plugin-proposal-private-property-in-object@7.21.11: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-property-in-object instead.
+npm warn deprecated source-map@0.8.0-beta.0: The work that was done in this beta branch won't be included in future versions
+npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 1339 packages, and audited 1340 packages in 24s
+
+269 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[Pipeline] sh
++ npm run build
+
+> app_for_jenkins@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+Compiled successfully.
+
+File sizes after gzip:
+
+  59.11 kB  build/static/js/main.5d61f62d.js
+  1.77 kB   build/static/js/453.3f49ba02.chunk.js
+  513 B     build/static/css/main.f855e6bc.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Docker Build)
+[Pipeline] sh
++ docker build -t madycloudmd/react-demo-app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  270.9MB
+Step 1/8 : FROM node:18-alpine as build
+18-alpine: Pulling from library/node
+f18232174bc9: Pulling fs layer
+dd71dde834b5: Pulling fs layer
+1e5a4c89cee5: Pulling fs layer
+25ff2da83641: Pulling fs layer
+25ff2da83641: Waiting
+1e5a4c89cee5: Verifying Checksum
+1e5a4c89cee5: Download complete
+f18232174bc9: Download complete
+f18232174bc9: Pull complete
+dd71dde834b5: Verifying Checksum
+dd71dde834b5: Download complete
+25ff2da83641: Verifying Checksum
+25ff2da83641: Download complete
+dd71dde834b5: Pull complete
+1e5a4c89cee5: Pull complete
+25ff2da83641: Pull complete
+Digest: sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+Status: Downloaded newer image for node:18-alpine
+ ---> ee77c6cd7c18
+Step 2/8 : WORKDIR /app
+ ---> Running in 3c38003580e1
+ ---> Removed intermediate container 3c38003580e1
+ ---> d21822686559
+Step 3/8 : COPY . .
+ ---> d596dd805245
+Step 4/8 : RUN npm install && npm run build
+ ---> Running in ec0e2558762f
+
+up to date, audited 1340 packages in 5s
+
+269 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[91mnpm notice
+npm notice New major version of npm available! 10.8.2 -> 11.5.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.5.2
+npm notice To update run: npm install -g npm@11.5.2
+npm notice
+[0m
+> app_for_jenkins@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+Compiled successfully.
+
+File sizes after gzip:
+
+  59.11 kB  build/static/js/main.5d61f62d.js
+  1.77 kB   build/static/js/453.3f49ba02.chunk.js
+  513 B     build/static/css/main.f855e6bc.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+ ---> Removed intermediate container ec0e2558762f
+ ---> c0af7a2f5886
+Step 5/8 : FROM nginx:stable-alpine
+stable-alpine: Pulling from library/nginx
+0368fd46e3c6: Pulling fs layer
+6f9dcf64fee2: Pulling fs layer
+d0b4991837de: Pulling fs layer
+b50be7f3bf10: Pulling fs layer
+049d729d0dee: Pulling fs layer
+078d56d567e7: Pulling fs layer
+47b6f4b4b3a3: Pulling fs layer
+786effc489a0: Pulling fs layer
+b50be7f3bf10: Waiting
+049d729d0dee: Waiting
+078d56d567e7: Waiting
+47b6f4b4b3a3: Waiting
+786effc489a0: Waiting
+6f9dcf64fee2: Verifying Checksum
+6f9dcf64fee2: Download complete
+d0b4991837de: Verifying Checksum
+d0b4991837de: Download complete
+0368fd46e3c6: Verifying Checksum
+0368fd46e3c6: Download complete
+0368fd46e3c6: Pull complete
+6f9dcf64fee2: Pull complete
+d0b4991837de: Pull complete
+b50be7f3bf10: Verifying Checksum
+b50be7f3bf10: Download complete
+b50be7f3bf10: Pull complete
+049d729d0dee: Verifying Checksum
+049d729d0dee: Download complete
+049d729d0dee: Pull complete
+078d56d567e7: Verifying Checksum
+078d56d567e7: Download complete
+078d56d567e7: Pull complete
+47b6f4b4b3a3: Download complete
+47b6f4b4b3a3: Pull complete
+786effc489a0: Verifying Checksum
+786effc489a0: Download complete
+786effc489a0: Pull complete
+Digest: sha256:d83c0138ea82c9f05c4378a5001e0c71256b647603c10c186bd7697a4db722d3
+Status: Downloaded newer image for nginx:stable-alpine
+ ---> aec7f4ce8b81
+Step 6/8 : COPY --from=build /app/build /usr/share/nginx/html
+ ---> eed128d7d599
+Step 7/8 : EXPOSE 80
+ ---> Running in f074deb37614
+ ---> Removed intermediate container f074deb37614
+ ---> 59c09690d43f
+Step 8/8 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Running in 2fedf4f69115
+ ---> Removed intermediate container 2fedf4f69115
+ ---> 9fbf7e9bab07
+Successfully built 9fbf7e9bab07
+Successfully tagged madycloudmd/react-demo-app:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Docker Push)
+[Pipeline] withCredentials
+Masking supported pattern matches of $PASSWORD
+[Pipeline] {
+[Pipeline] sh
++ echo ****
++ docker login -u madycloudmd --password-stdin
+WARNING! Your password will be stored unencrypted in /var/lib/jenkins/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credential-stores
+
+Login Succeeded
++ docker push madycloudmd/react-demo-app
+Using default tag: latest
+The push refers to repository [docker.io/madycloudmd/react-demo-app]
+f11fe403898a: Preparing
+365f05739a0b: Preparing
+09a78e1c8457: Preparing
+aabf53a58c5a: Preparing
+39b5112a4779: Preparing
+243fb2529a82: Preparing
+3c0990ff3868: Preparing
+daf8a96d7e43: Preparing
+7003d23cc217: Preparing
+243fb2529a82: Waiting
+3c0990ff3868: Waiting
+7003d23cc217: Waiting
+daf8a96d7e43: Waiting
+aabf53a58c5a: Mounted from library/nginx
+09a78e1c8457: Mounted from library/nginx
+39b5112a4779: Mounted from library/nginx
+365f05739a0b: Mounted from library/nginx
+243fb2529a82: Mounted from library/nginx
+3c0990ff3868: Mounted from library/nginx
+f11fe403898a: Pushed
+daf8a96d7e43: Mounted from library/nginx
+7003d23cc217: Mounted from library/nginx
+latest: digest: sha256:907f623a757634daebb07a94352088e53454e1472c71fde2d442b2becb4a2b36 size: 2199
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
