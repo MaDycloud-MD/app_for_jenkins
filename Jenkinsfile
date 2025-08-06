@@ -2,52 +2,38 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "madycloudmd/app_for_jenkins:latest"
+        DOCKER_IMAGE = 'madycloudmd/react-demo-app'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                echo 'Code checked out by Jenkins (Pipeline from SCM)'
+                git 'https://github.com/YOUR_USERNAME/react-demo-app.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build') {
             steps {
-                echo 'Installing npm dependencies...'
                 sh 'npm install'
-            }
-        }
-
-        stage('Build React App') {
-            steps {
-                echo 'Building React app...'
                 sh 'npm run build'
             }
         }
 
         stage('Docker Build') {
             steps {
-                echo 'Building Docker image...'
-                sh 'docker build -t $IMAGE_NAME .'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
-        stage('Push to DockerHub') {
+        stage('Docker Push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push $IMAGE_NAME
+                      echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
+                      docker push $DOCKER_IMAGE
                     '''
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline completed.'
         }
     }
 }
