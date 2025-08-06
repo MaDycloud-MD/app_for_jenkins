@@ -6,27 +6,34 @@ pipeline {
     }
 
     stages {
-        stage('Clone') {
+        stage('Checkout') {
             steps {
-                echo 'Source code already checked out by Jenkins.'
+                echo 'Code checked out by Jenkins (Pipeline from SCM)'
             }
         }
 
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Building the Docker image...'
+                echo 'Installing npm dependencies...'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build React App') {
+            steps {
+                echo 'Building React app...'
+                sh 'npm run build'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                echo 'Building Docker image...'
                 sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                sh 'echo "No tests yet!"'
-            }
-        }
-
-        stage('Deploy') {
+        stage('Push to DockerHub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh '''
