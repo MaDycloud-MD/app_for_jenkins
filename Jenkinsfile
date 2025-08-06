@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/YOUR_USERNAME/react-demo-app.git'
+                git 'https://github.com/MaDycloud-MD/app_for_jenkins.git'
             }
         }
 
